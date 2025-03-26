@@ -9,9 +9,11 @@ import {
   Home,
   Info,
   Sparkles,
-  Phone
+  Phone,
+  ShoppingBag
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import CartIcon from '@/components/CartIcon';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Header = () => {
@@ -32,6 +34,7 @@ const Header = () => {
     { name: 'Home', path: '/', icon: <Home className="w-4 h-4 mr-2" /> },
     { name: 'About', path: '/about', icon: <Info className="w-4 h-4 mr-2" /> },
     { name: 'Services', path: '/services', icon: <Sparkles className="w-4 h-4 mr-2" /> },
+    { name: 'Products', path: '/products', icon: <ShoppingBag className="w-4 h-4 mr-2" /> },
     { name: 'Book Now', path: '/booking', icon: <Calendar className="w-4 h-4 mr-2" /> },
     { name: 'Contact', path: '/contact', icon: <Phone className="w-4 h-4 mr-2" /> },
   ];
@@ -64,6 +67,7 @@ const Header = () => {
         </nav>
 
         <div className="hidden md:flex items-center space-x-4">
+          <CartIcon />
           <Link to="/signin">
             <Button variant="ghost" className="text-spa-800 hover:text-spa-900 hover:bg-spa-100">
               Sign In
@@ -76,14 +80,17 @@ const Header = () => {
           </Link>
         </div>
 
-        {/* Mobile Menu Button */}
-        <button 
-          className="md:hidden text-spa-800"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle menu"
-        >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        {/* Mobile Menu Button & Cart Icon */}
+        <div className="md:hidden flex items-center space-x-4">
+          <CartIcon />
+          <button 
+            className="text-spa-800"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Navigation */}
