@@ -1,4 +1,5 @@
 
+import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -20,44 +21,46 @@ import Footer from "./components/Footer";
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <div className="flex flex-col min-h-screen">
-          <Header />
-          <main className="flex-grow pt-16">
-            <AnimatePresence mode="wait">
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/signin" element={<SignIn />} />
-                <Route path="/register" element={<Register />} />
-                
-                {/* Add more routes as they are developed */}
-                {/* <Route path="/about" element={<About />} /> */}
-                {/* <Route path="/services" element={<Services />} /> */}
-                {/* <Route path="/services/:serviceId" element={<ServiceDetail />} /> */}
-                {/* <Route path="/booking" element={<Booking />} /> */}
-                {/* <Route path="/contact" element={<Contact />} /> */}
-                {/* <Route path="/profile" element={<Profile />} /> */}
-                
-                {/* Admin Routes */}
-                {/* <Route path="/admin/dashboard" element={<AdminDashboard />} /> */}
-                
-                {/* Manager Routes */}
-                {/* <Route path="/manager/dashboard" element={<ManagerDashboard />} /> */}
-                
-                {/* Catch-all route for 404 */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </AnimatePresence>
-          </main>
-          <Footer />
-        </div>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+  <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-grow pt-16">
+              <AnimatePresence mode="wait">
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/signin" element={<SignIn />} />
+                  <Route path="/register" element={<Register />} />
+                  
+                  {/* Add more routes as they are developed */}
+                  {/* <Route path="/about" element={<About />} /> */}
+                  {/* <Route path="/services" element={<Services />} /> */}
+                  {/* <Route path="/services/:serviceId" element={<ServiceDetail />} /> */}
+                  {/* <Route path="/booking" element={<Booking />} /> */}
+                  {/* <Route path="/contact" element={<Contact />} /> */}
+                  {/* <Route path="/profile" element={<Profile />} /> */}
+                  
+                  {/* Admin Routes */}
+                  {/* <Route path="/admin/dashboard" element={<AdminDashboard />} /> */}
+                  
+                  {/* Manager Routes */}
+                  {/* <Route path="/manager/dashboard" element={<ManagerDashboard />} /> */}
+                  
+                  {/* Catch-all route for 404 */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </AnimatePresence>
+            </main>
+            <Footer />
+          </div>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  </React.StrictMode>
 );
 
 export default App;
