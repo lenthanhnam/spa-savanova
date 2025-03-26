@@ -12,7 +12,7 @@ export interface ServiceCardProps {
   price: string;
   duration: string;
   slug: string;
-  category?: string; // Added the category property as optional
+  category?: string; // Adding the category property as optional
 }
 
 const ServiceCard = ({ 
@@ -64,3 +64,4 @@ const ServiceCard = ({
 };
 
 export default ServiceCard;
+
