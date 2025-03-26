@@ -32,6 +32,17 @@ import Footer from "./components/Footer";
 // Create React Query client
 const queryClient = new QueryClient();
 
+// Layout component for pages with header and footer
+const MainLayout = ({ children }: { children: React.ReactNode }) => (
+  <div className="flex flex-col min-h-screen">
+    <Header />
+    <main className="flex-grow pt-16">
+      {children}
+    </main>
+    <Footer />
+  </div>
+);
+
 const App = () => (
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
@@ -40,38 +51,28 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <Routes>
-              {/* Admin Routes */}
-              <Route path="/admin/dashboard" element={<AdminDashboard />} />
-              
-              {/* Public Routes with Header & Footer */}
-              <Route path="/" element={
-                <div className="flex flex-col min-h-screen">
-                  <Header />
-                  <main className="flex-grow pt-16">
-                    <AnimatePresence mode="wait">
-                      <Routes>
-                        <Route path="/" element={<Index />} />
-                        <Route path="/signin" element={<SignIn />} />
-                        <Route path="/register" element={<Register />} />
-                        <Route path="/about" element={<About />} />
-                        <Route path="/services" element={<Services />} />
-                        <Route path="/booking" element={<Booking />} />
-                        <Route path="/contact" element={<Contact />} />
-                        <Route path="/products" element={<Products />} />
-                        <Route path="/cart" element={<Cart />} />
-                        <Route path="/checkout" element={<Checkout />} />
-                        <Route path="/order-success" element={<OrderSuccess />} />
-                        
-                        {/* Catch-all route for 404 */}
-                        <Route path="*" element={<NotFound />} />
-                      </Routes>
-                    </AnimatePresence>
-                  </main>
-                  <Footer />
-                </div>
-              } />
-            </Routes>
+            <AnimatePresence mode="wait">
+              <Routes>
+                {/* Admin Routes */}
+                <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                
+                {/* Public Routes with Header & Footer */}
+                <Route path="/" element={<MainLayout><Index /></MainLayout>} />
+                <Route path="/signin" element={<MainLayout><SignIn /></MainLayout>} />
+                <Route path="/register" element={<MainLayout><Register /></MainLayout>} />
+                <Route path="/about" element={<MainLayout><About /></MainLayout>} />
+                <Route path="/services" element={<MainLayout><Services /></MainLayout>} />
+                <Route path="/booking" element={<MainLayout><Booking /></MainLayout>} />
+                <Route path="/contact" element={<MainLayout><Contact /></MainLayout>} />
+                <Route path="/products" element={<MainLayout><Products /></MainLayout>} />
+                <Route path="/cart" element={<MainLayout><Cart /></MainLayout>} />
+                <Route path="/checkout" element={<MainLayout><Checkout /></MainLayout>} />
+                <Route path="/order-success" element={<MainLayout><OrderSuccess /></MainLayout>} />
+                
+                {/* Catch-all route for 404 */}
+                <Route path="*" element={<MainLayout><NotFound /></MainLayout>} />
+              </Routes>
+            </AnimatePresence>
           </BrowserRouter>
         </TooltipProvider>
       </CartProvider>
