@@ -22,6 +22,9 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import OrderSuccess from "./pages/OrderSuccess";
 
+// Admin Pages
+import AdminDashboard from "./pages/admin/Dashboard";
+
 // Layout Components
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -37,40 +40,38 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <div className="flex flex-col min-h-screen">
-              <Header />
-              <main className="flex-grow pt-16">
-                <AnimatePresence mode="wait">
-                  <Routes>
-                    <Route path="/" element={<Index />} />
-                    <Route path="/signin" element={<SignIn />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/services" element={<Services />} />
-                    <Route path="/booking" element={<Booking />} />
-                    <Route path="/contact" element={<Contact />} />
-                    <Route path="/products" element={<Products />} />
-                    <Route path="/cart" element={<Cart />} />
-                    <Route path="/checkout" element={<Checkout />} />
-                    <Route path="/order-success" element={<OrderSuccess />} />
-                    
-                    {/* Add more routes as they are developed */}
-                    {/* <Route path="/services/:serviceId" element={<ServiceDetail />} /> */}
-                    {/* <Route path="/profile" element={<Profile />} /> */}
-                    
-                    {/* Admin Routes */}
-                    {/* <Route path="/admin/dashboard" element={<AdminDashboard />} /> */}
-                    
-                    {/* Manager Routes */}
-                    {/* <Route path="/manager/dashboard" element={<ManagerDashboard />} /> */}
-                    
-                    {/* Catch-all route for 404 */}
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </AnimatePresence>
-              </main>
-              <Footer />
-            </div>
+            <Routes>
+              {/* Admin Routes */}
+              <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              
+              {/* Public Routes with Header & Footer */}
+              <Route path="/" element={
+                <div className="flex flex-col min-h-screen">
+                  <Header />
+                  <main className="flex-grow pt-16">
+                    <AnimatePresence mode="wait">
+                      <Routes>
+                        <Route path="/" element={<Index />} />
+                        <Route path="/signin" element={<SignIn />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/about" element={<About />} />
+                        <Route path="/services" element={<Services />} />
+                        <Route path="/booking" element={<Booking />} />
+                        <Route path="/contact" element={<Contact />} />
+                        <Route path="/products" element={<Products />} />
+                        <Route path="/cart" element={<Cart />} />
+                        <Route path="/checkout" element={<Checkout />} />
+                        <Route path="/order-success" element={<OrderSuccess />} />
+                        
+                        {/* Catch-all route for 404 */}
+                        <Route path="*" element={<NotFound />} />
+                      </Routes>
+                    </AnimatePresence>
+                  </main>
+                  <Footer />
+                </div>
+              } />
+            </Routes>
           </BrowserRouter>
         </TooltipProvider>
       </CartProvider>

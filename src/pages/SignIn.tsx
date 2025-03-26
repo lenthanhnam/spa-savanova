@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -40,6 +39,7 @@ const SignIn = () => {
           title: 'Success',
           description: 'Signed in as Admin',
         });
+        // Redirect directly to admin dashboard
         navigate('/admin/dashboard');
       } else if (email === 'manager@example.com' && password === 'password') {
         toast({
