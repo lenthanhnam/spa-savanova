@@ -12,6 +12,10 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import SignIn from "./pages/SignIn";
 import Register from "./pages/Register";
+import About from "./pages/About";
+import Services from "./pages/Services";
+import Booking from "./pages/Booking";
+import Contact from "./pages/Contact";
 
 // Layout Components
 import Header from "./components/Header";
@@ -35,13 +39,13 @@ const App = () => (
                   <Route path="/" element={<Index />} />
                   <Route path="/signin" element={<SignIn />} />
                   <Route path="/register" element={<Register />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/services" element={<Services />} />
+                  <Route path="/booking" element={<Booking />} />
+                  <Route path="/contact" element={<Contact />} />
                   
                   {/* Add more routes as they are developed */}
-                  {/* <Route path="/about" element={<About />} /> */}
-                  {/* <Route path="/services" element={<Services />} /> */}
                   {/* <Route path="/services/:serviceId" element={<ServiceDetail />} /> */}
-                  {/* <Route path="/booking" element={<Booking />} /> */}
-                  {/* <Route path="/contact" element={<Contact />} /> */}
                   {/* <Route path="/profile" element={<Profile />} /> */}
                   
                   {/* Admin Routes */}
