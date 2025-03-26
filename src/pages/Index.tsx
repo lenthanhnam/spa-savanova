@@ -67,7 +67,7 @@ const testimonials = [
   {
     name: 'Michael Chang',
     role: 'First-time Visitor',
-    content: 'Booking was incredibly easy and the hot stone massage was life-changing. I've already scheduled my next appointment!',
+    content: "Booking was incredibly easy and the hot stone massage was life-changing. I've already scheduled my next appointment!",
     avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
     rating: 5
   },
