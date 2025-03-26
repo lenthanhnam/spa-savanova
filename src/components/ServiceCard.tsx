@@ -12,7 +12,7 @@ export interface ServiceCardProps {
   price: string;
   duration: string;
   slug: string;
-  category?: string; // Thêm thuộc tính category (tùy chọn)
+  category?: string; // Added the category property as optional
 }
 
 const ServiceCard = ({ 
