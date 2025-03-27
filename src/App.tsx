@@ -21,6 +21,10 @@ import Products from "./pages/Products";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import OrderSuccess from "./pages/OrderSuccess";
+import BookingHistory from "./pages/BookingHistory";
+import ProductDetail from "./pages/ProductDetail";
+import ServiceDetail from "./pages/ServiceDetail";
+import RateService from "./pages/RateService";
 
 // Admin Pages
 import AdminDashboard from "./pages/admin/Dashboard";
@@ -62,9 +66,13 @@ const App = () => (
                 <Route path="/register" element={<MainLayout><Register /></MainLayout>} />
                 <Route path="/about" element={<MainLayout><About /></MainLayout>} />
                 <Route path="/services" element={<MainLayout><Services /></MainLayout>} />
+                <Route path="/services/:slug" element={<MainLayout><ServiceDetail /></MainLayout>} />
                 <Route path="/booking" element={<MainLayout><Booking /></MainLayout>} />
+                <Route path="/booking-history" element={<MainLayout><BookingHistory /></MainLayout>} />
+                <Route path="/rate-service/:id" element={<MainLayout><RateService /></MainLayout>} />
                 <Route path="/contact" element={<MainLayout><Contact /></MainLayout>} />
                 <Route path="/products" element={<MainLayout><Products /></MainLayout>} />
+                <Route path="/products/:slug" element={<MainLayout><ProductDetail /></MainLayout>} />
                 <Route path="/cart" element={<MainLayout><Cart /></MainLayout>} />
                 <Route path="/checkout" element={<MainLayout><Checkout /></MainLayout>} />
                 <Route path="/order-success" element={<MainLayout><OrderSuccess /></MainLayout>} />

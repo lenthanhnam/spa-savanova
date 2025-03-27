@@ -10,7 +10,8 @@ import {
   Info,
   Sparkles,
   Phone,
-  ShoppingBag
+  ShoppingBag,
+  ClipboardList
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import CartIcon from '@/components/CartIcon';
@@ -36,6 +37,7 @@ const Header = () => {
     { name: 'Services', path: '/services', icon: <Sparkles className="w-4 h-4 mr-2" /> },
     { name: 'Products', path: '/products', icon: <ShoppingBag className="w-4 h-4 mr-2" /> },
     { name: 'Book Now', path: '/booking', icon: <Calendar className="w-4 h-4 mr-2" /> },
+    { name: 'Bookings', path: '/booking-history', icon: <ClipboardList className="w-4 h-4 mr-2" /> },
     { name: 'Contact', path: '/contact', icon: <Phone className="w-4 h-4 mr-2" /> },
   ];
 
