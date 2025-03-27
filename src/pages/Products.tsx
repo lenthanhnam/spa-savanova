@@ -118,6 +118,10 @@ const Products = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const { addToCart } = useCart();
 
+  const handleAddToCart = (product: ProductCardProps & { quantity: number }) => {
+    addToCart(product);
+  };
+
   const filteredProducts = allProducts.filter(product => {
     // Lọc theo danh mục
     const matchesCategory = activeCategory === 'all' || product.category === activeCategory;
@@ -198,7 +202,7 @@ const Products = () => {
                 <ProductCard 
                   key={product.id} 
                   {...product} 
-                  onAddToCart={addToCart}
+                  onAddToCart={handleAddToCart}
                 />
               ))}
             </div>

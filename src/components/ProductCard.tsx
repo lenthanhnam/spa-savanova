@@ -17,7 +17,7 @@ export interface ProductCardProps {
 }
 
 interface ProductCardComponentProps extends ProductCardProps {
-  onAddToCart: (product: ProductCardProps) => void;
+  onAddToCart: (product: ProductCardProps & { quantity: number }) => void;
 }
 
 const ProductCard = ({ 
@@ -26,6 +26,7 @@ const ProductCard = ({
   description, 
   imageUrl, 
   price, 
+  category,
   slug,
   inStock,
   onAddToCart
@@ -39,9 +40,10 @@ const ProductCard = ({
       description, 
       imageUrl, 
       price, 
-      category: '',
+      category,
       slug,
-      inStock
+      inStock,
+      quantity: 1
     });
     
     toast({
