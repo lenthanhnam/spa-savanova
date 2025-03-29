@@ -28,6 +28,11 @@ import RateService from "./pages/RateService";
 
 // Admin Pages
 import AdminDashboard from "./pages/admin/Dashboard";
+import AdminCustomers from "./pages/admin/Customers";
+import AdminAppointments from "./pages/admin/Appointments";
+import AdminProducts from "./pages/admin/Products";
+import AdminAnalytics from "./pages/admin/Analytics";
+import AdminSettings from "./pages/admin/Settings";
 
 // Layout Components
 import Header from "./components/Header";
@@ -59,6 +64,11 @@ const App = () => (
               <Routes>
                 {/* Admin Routes */}
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                <Route path="/admin/customers" element={<AdminCustomers />} />
+                <Route path="/admin/appointments" element={<AdminAppointments />} />
+                <Route path="/admin/products" element={<AdminProducts />} />
+                <Route path="/admin/analytics" element={<AdminAnalytics />} />
+                <Route path="/admin/settings" element={<AdminSettings />} />
                 
                 {/* Public Routes with Header & Footer */}
                 <Route path="/" element={<MainLayout><Index /></MainLayout>} />
