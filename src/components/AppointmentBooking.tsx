@@ -38,10 +38,11 @@ const services = [
 ];
 
 interface AppointmentBookingProps {
+  branchId?: string; // Add the branchId prop
   simplified?: boolean;
 }
 
-const AppointmentBooking = ({ simplified = false }: AppointmentBookingProps) => {
+const AppointmentBooking = ({ branchId, simplified = false }: AppointmentBookingProps) => {
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [service, setService] = useState<string>('');
   const [timeSlot, setTimeSlot] = useState<string>('');
@@ -52,7 +53,7 @@ const AppointmentBooking = ({ simplified = false }: AppointmentBookingProps) => 
     e.preventDefault();
     toast({
       title: 'Appointment Booked',
-      description: `Your appointment for ${service} on ${date ? format(date, 'PPP') : ''} at ${timeSlot} has been confirmed.`,
+      description: `Your appointment for ${service} on ${date ? format(date, 'PPP') : ''} at ${timeSlot} has been confirmed at branch #${branchId}.`,
       variant: 'default',
     });
   };
