@@ -19,7 +19,8 @@ import {
   FileText,
   Globe,
   Banknote,
-  Smartphone
+  Smartphone,
+  Store
 } from 'lucide-react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { Button } from '@/components/ui/button';
@@ -30,6 +31,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useToast } from '@/hooks/use-toast';
+import { branches } from '@/data/branches';
+import { Branch } from '@/types/branch';
 
 const Settings = () => {
   const { toast } = useToast();
@@ -75,6 +78,10 @@ const Settings = () => {
     vatRate: 10,
   });
 
+  // Branches State
+  const [branchList, setBranchList] = useState(branches);
+  const [editingBranch, setEditingBranch] = useState<Branch | null>(null);
+
   const handleBusinessInfoChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setBusinessInfo(prev => ({ ...prev, [name]: value }));
@@ -111,6 +118,56 @@ const Settings = () => {
     });
   };
 
+  const handleEditBranch = (branch: Branch) => {
+    setEditingBranch({...branch});
+  };
+
+  const handleBranchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!editingBranch) return;
+    
+    const { name, value } = e.target;
+    setEditingBranch(prev => ({
+      ...prev!,
+      [name]: value
+    }));
+  };
+
+  const handleSaveBranch = () => {
+    if (!editingBranch) return;
+    
+    setBranchList(prev => 
+      prev.map(branch => 
+        branch.id === editingBranch.id ? editingBranch : branch
+      )
+    );
+    
+    setEditingBranch(null);
+    
+    toast({
+      title: "Chi nhánh đã được cập nhật",
+      description: "Thông tin chi nhánh đã được lưu thành công.",
+    });
+  };
+
+  const handleAddNewBranch = () => {
+    const newBranch: Branch = {
+      id: `${branchList.length + 1}`,
+      name: 'Chi nhánh mới',
+      address: 'Địa chỉ chi nhánh',
+      phone: '0901234567',
+      openTime: '09:00',
+      closeTime: '21:00',
+    };
+    
+    setBranchList(prev => [...prev, newBranch]);
+    setEditingBranch(newBranch);
+    
+    toast({
+      title: "Đã thêm chi nhánh mới",
+      description: "Vui lòng cập nhật thông tin chi tiết.",
+    });
+  };
+
   return (
     <AdminLayout>
       <div className="p-6">
@@ -126,6 +183,7 @@ const Settings = () => {
           <TabsList className="mb-4">
             <TabsTrigger value="business">Thông tin doanh nghiệp</TabsTrigger>
             <TabsTrigger value="hours">Giờ hoạt động</TabsTrigger>
+            <TabsTrigger value="branches">Chi nhánh</TabsTrigger>
             <TabsTrigger value="notifications">Thông báo</TabsTrigger>
             <TabsTrigger value="payment">Thanh toán</TabsTrigger>
             <TabsTrigger value="security">Bảo mật</TabsTrigger>
@@ -276,6 +334,130 @@ const Settings = () => {
                             onCheckedChange={(checked) => handleOperationHoursChange(day, 'isOpen', checked)}
                           />
                         </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="branches">
+            <Card>
+              <CardHeader>
+                <CardTitle>Quản lý chi nhánh</CardTitle>
+                <CardDescription>Thêm, chỉnh sửa và quản lý các chi nhánh của doanh nghiệp</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="mb-4">
+                  <Button 
+                    onClick={handleAddNewBranch}
+                    className="bg-spa-800 hover:bg-spa-700"
+                  >
+                    <Store className="mr-2 h-4 w-4" />
+                    Thêm chi nhánh mới
+                  </Button>
+                </div>
+                
+                {editingBranch ? (
+                  <div className="bg-spa-50 rounded-lg p-6 mb-4">
+                    <h3 className="text-lg font-medium mb-4">Chỉnh sửa chi nhánh</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <Label htmlFor="branch-name">Tên chi nhánh</Label>
+                        <Input
+                          id="branch-name"
+                          name="name"
+                          value={editingBranch.name}
+                          onChange={handleBranchInputChange}
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="branch-address">Địa chỉ</Label>
+                        <Input
+                          id="branch-address"
+                          name="address"
+                          value={editingBranch.address}
+                          onChange={handleBranchInputChange}
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="branch-phone">Số điện thoại</Label>
+                        <Input
+                          id="branch-phone"
+                          name="phone"
+                          value={editingBranch.phone}
+                          onChange={handleBranchInputChange}
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="branch-open">Giờ mở cửa</Label>
+                          <Input
+                            id="branch-open"
+                            name="openTime"
+                            type="time"
+                            value={editingBranch.openTime}
+                            onChange={handleBranchInputChange}
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="branch-close">Giờ đóng cửa</Label>
+                          <Input
+                            id="branch-close"
+                            name="closeTime"
+                            type="time"
+                            value={editingBranch.closeTime}
+                            onChange={handleBranchInputChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="flex justify-end space-x-2 mt-4">
+                        <Button 
+                          variant="outline" 
+                          onClick={() => setEditingBranch(null)}
+                        >
+                          Hủy
+                        </Button>
+                        <Button 
+                          onClick={handleSaveBranch}
+                          className="bg-spa-800 hover:bg-spa-700"
+                        >
+                          Lưu chi nhánh
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
+                
+                <div className="space-y-3">
+                  {branchList.map(branch => (
+                    <div key={branch.id} className="border rounded-lg p-4">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h3 className="font-medium text-lg">{branch.name}</h3>
+                          <div className="mt-2 space-y-1 text-sm text-gray-600">
+                            <div className="flex items-start">
+                              <MapPin className="h-3 w-3 mt-1 mr-2 flex-shrink-0" />
+                              <span>{branch.address}</span>
+                            </div>
+                            <div className="flex items-center">
+                              <Phone className="h-3 w-3 mr-2 flex-shrink-0" />
+                              <span>{branch.phone}</span>
+                            </div>
+                            <div className="flex items-center">
+                              <Clock className="h-3 w-3 mr-2 flex-shrink-0" />
+                              <span>{branch.openTime} - {branch.closeTime}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleEditBranch(branch)}
+                        >
+                          Chỉnh sửa
+                        </Button>
                       </div>
                     </div>
                   ))}

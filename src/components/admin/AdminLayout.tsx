@@ -12,7 +12,8 @@ import {
   Menu,
   X,
   LogOut,
-  ChevronLeft
+  ChevronLeft,
+  Store
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
@@ -28,6 +29,7 @@ const navItems: NavItem[] = [
   { title: 'Customers', icon: Users, href: '/admin/customers' },
   { title: 'Appointments', icon: Calendar, href: '/admin/appointments' },
   { title: 'Products', icon: ShoppingBag, href: '/admin/products' },
+  { title: 'Branches', icon: Store, href: '/admin/branches' },
   { title: 'Analytics', icon: BarChart3, href: '/admin/analytics' },
   { title: 'Settings', icon: Settings, href: '/admin/settings' },
 ];

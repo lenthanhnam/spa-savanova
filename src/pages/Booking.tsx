@@ -3,6 +3,9 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, CheckCircle } from 'lucide-react';
 import AppointmentBooking from '@/components/AppointmentBooking';
+import BranchSelector from '@/components/BranchSelector';
+import { branches } from '@/data/branches';
+import { Branch } from '@/types/branch';
 import { useToast } from '@/hooks/use-toast';
 
 const fadeIn = {
@@ -13,6 +16,7 @@ const fadeIn = {
 const Booking = () => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedBranch, setSelectedBranch] = useState<Branch>(branches[0]);
 
   useEffect(() => {
     // Simulate loading of booking data
@@ -24,6 +28,14 @@ const Booking = () => {
     
     return () => clearTimeout(timer);
   }, []);
+
+  const handleSelectBranch = (branch: Branch) => {
+    setSelectedBranch(branch);
+    toast({
+      title: "Chi nhánh đã được chọn",
+      description: `Bạn đã chọn chi nhánh ${branch.name}`,
+    });
+  };
 
   // Benefits of booking with us
   const benefits = [
@@ -77,6 +89,13 @@ const Booking = () => {
                   Our streamlined booking process ensures a hassle-free experience from the moment you schedule to when you arrive for your appointment.
                 </p>
                 
+                <BranchSelector 
+                  branches={branches}
+                  selectedBranch={selectedBranch}
+                  onSelectBranch={handleSelectBranch}
+                  className="mb-8"
+                />
+                
                 <div className="bg-spa-50 rounded-xl p-6 mb-8">
                   <h3 className="text-xl font-medium text-spa-800 mb-4">Booking Benefits</h3>
                   <ul className="space-y-3">
@@ -116,7 +135,7 @@ const Booking = () => {
                 </div>
               ) : (
                 <div>
-                  <AppointmentBooking />
+                  <AppointmentBooking branchId={selectedBranch.id} />
                   
                   <div className="mt-8 bg-amber-50 border border-amber-100 rounded-lg p-4 text-sm text-amber-800">
                     <p className="font-medium">Cancellation Policy:</p>

@@ -8,6 +8,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useCart } from '@/hooks/useCart';
 import { useToast } from '@/hooks/use-toast';
+import BranchSelector from '@/components/BranchSelector';
+import { branches } from '@/data/branches';
+import { Branch } from '@/types/branch';
 
 interface FormData {
   fullName: string;
@@ -34,6 +37,7 @@ const Checkout = () => {
     paymentMethod: 'cod'
   });
   
+  const [selectedBranch, setSelectedBranch] = useState<Branch>(branches[0]);
   const [errors, setErrors] = useState<Partial<FormData>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   
@@ -72,6 +76,14 @@ const Checkout = () => {
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+  };
+  
+  const handleSelectBranch = (branch: Branch) => {
+    setSelectedBranch(branch);
+    toast({
+      title: "Chi nhánh đã được chọn",
+      description: `Bạn đã chọn nhận hàng tại chi nhánh ${branch.name}`,
+    });
   };
   
   const handleSubmit = (e: React.FormEvent) => {
@@ -132,6 +144,13 @@ const Checkout = () => {
             {/* Checkout Form */}
             <div className="lg:col-span-2">
               <form onSubmit={handleSubmit} className="space-y-8">
+                {/* Chi nhánh */}
+                <BranchSelector 
+                  branches={branches}
+                  selectedBranch={selectedBranch}
+                  onSelectBranch={handleSelectBranch}
+                />
+                
                 {/* Thông tin cá nhân */}
                 <div className="bg-white rounded-xl shadow-sm overflow-hidden">
                   <div className="px-6 py-4 border-b flex items-center">
