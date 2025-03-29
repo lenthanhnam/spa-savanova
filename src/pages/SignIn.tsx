@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -7,6 +8,35 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, ArrowRight } from 'lucide-react';
+import { User } from '@/types/branch';
+
+// Mock users for demo
+const MOCK_USERS: User[] = [
+  {
+    id: '1',
+    email: 'admin@example.com',
+    name: 'Admin User',
+    role: 'admin',
+    joinDate: '2023-01-01',
+  },
+  {
+    id: '2',
+    email: 'manager@example.com',
+    name: 'Branch Manager',
+    role: 'manager',
+    branchId: '1',
+    joinDate: '2023-01-15',
+  },
+  {
+    id: '3',
+    email: 'user@example.com',
+    name: 'John Doe',
+    role: 'customer',
+    phone: '123-456-7890',
+    address: '123 Main St, Anytown, CA 12345',
+    joinDate: '2023-02-20',
+  }
+];
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -33,26 +63,26 @@ const SignIn = () => {
     
     // Simulate API call with timeout
     setTimeout(() => {
-      // For demo purposes, hardcoded credentials
-      if (email === 'admin@example.com' && password === 'password') {
+      // Find user in mock data
+      const user = MOCK_USERS.find(u => u.email === email);
+      
+      if (user && password === 'password') {
+        // Store user data in localStorage
+        localStorage.setItem('user', JSON.stringify(user));
+        
         toast({
           title: 'Success',
-          description: 'Signed in as Admin',
+          description: `Welcome back, ${user.name}!`,
         });
-        // Redirect directly to admin dashboard
-        navigate('/admin/dashboard');
-      } else if (email === 'manager@example.com' && password === 'password') {
-        toast({
-          title: 'Success',
-          description: 'Signed in as Manager',
-        });
-        navigate('/manager/dashboard');
-      } else if (email === 'user@example.com' && password === 'password') {
-        toast({
-          title: 'Success',
-          description: 'Welcome back!',
-        });
-        navigate('/profile');
+        
+        // Redirect based on user role
+        if (user.role === 'admin') {
+          navigate('/admin/dashboard');
+        } else if (user.role === 'manager') {
+          navigate('/admin/branches');
+        } else {
+          navigate('/profile');
+        }
       } else {
         toast({
           title: 'Error',

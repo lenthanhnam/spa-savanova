@@ -7,6 +7,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { CartProvider } from "@/hooks/useCart";
+import { AuthProvider } from "@/hooks/useAuth";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 // Pages
 import Index from "./pages/Index";
@@ -25,6 +27,7 @@ import BookingHistory from "./pages/BookingHistory";
 import ProductDetail from "./pages/ProductDetail";
 import ServiceDetail from "./pages/ServiceDetail";
 import RateService from "./pages/RateService";
+import Profile from "./pages/Profile";
 
 // Admin Pages
 import AdminDashboard from "./pages/admin/Dashboard";
@@ -56,46 +59,135 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => (
 const App = () => (
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <CartProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <AnimatePresence mode="wait">
-              <Routes>
-                {/* Admin Routes */}
-                <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                <Route path="/admin/customers" element={<AdminCustomers />} />
-                <Route path="/admin/appointments" element={<AdminAppointments />} />
-                <Route path="/admin/products" element={<AdminProducts />} />
-                <Route path="/admin/branches" element={<AdminBranches />} />
-                <Route path="/admin/analytics" element={<AdminAnalytics />} />
-                <Route path="/admin/settings" element={<AdminSettings />} />
-                
-                {/* Public Routes with Header & Footer */}
-                <Route path="/" element={<MainLayout><Index /></MainLayout>} />
-                <Route path="/signin" element={<MainLayout><SignIn /></MainLayout>} />
-                <Route path="/register" element={<MainLayout><Register /></MainLayout>} />
-                <Route path="/about" element={<MainLayout><About /></MainLayout>} />
-                <Route path="/services" element={<MainLayout><Services /></MainLayout>} />
-                <Route path="/services/:slug" element={<MainLayout><ServiceDetail /></MainLayout>} />
-                <Route path="/booking" element={<MainLayout><Booking /></MainLayout>} />
-                <Route path="/booking-history" element={<MainLayout><BookingHistory /></MainLayout>} />
-                <Route path="/rate-service/:id" element={<MainLayout><RateService /></MainLayout>} />
-                <Route path="/contact" element={<MainLayout><Contact /></MainLayout>} />
-                <Route path="/products" element={<MainLayout><Products /></MainLayout>} />
-                <Route path="/products/:slug" element={<MainLayout><ProductDetail /></MainLayout>} />
-                <Route path="/cart" element={<MainLayout><Cart /></MainLayout>} />
-                <Route path="/checkout" element={<MainLayout><Checkout /></MainLayout>} />
-                <Route path="/order-success" element={<MainLayout><OrderSuccess /></MainLayout>} />
-                
-                {/* Catch-all route for 404 */}
-                <Route path="*" element={<MainLayout><NotFound /></MainLayout>} />
-              </Routes>
-            </AnimatePresence>
-          </BrowserRouter>
-        </TooltipProvider>
-      </CartProvider>
+      <BrowserRouter>
+        <AuthProvider>
+          <CartProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <AnimatePresence mode="wait">
+                <Routes>
+                  {/* Admin Routes */}
+                  <Route 
+                    path="/admin/dashboard" 
+                    element={
+                      <ProtectedRoute allowedRoles={['admin']}>
+                        <AdminDashboard />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  <Route 
+                    path="/admin/customers" 
+                    element={
+                      <ProtectedRoute allowedRoles={['admin']}>
+                        <AdminCustomers />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  <Route 
+                    path="/admin/appointments" 
+                    element={
+                      <ProtectedRoute allowedRoles={['admin', 'manager']}>
+                        <AdminAppointments />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  <Route 
+                    path="/admin/products" 
+                    element={
+                      <ProtectedRoute allowedRoles={['admin', 'manager']}>
+                        <AdminProducts />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  <Route 
+                    path="/admin/branches" 
+                    element={
+                      <ProtectedRoute allowedRoles={['admin', 'manager']}>
+                        <AdminBranches />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  <Route 
+                    path="/admin/analytics" 
+                    element={
+                      <ProtectedRoute allowedRoles={['admin']}>
+                        <AdminAnalytics />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  <Route 
+                    path="/admin/settings" 
+                    element={
+                      <ProtectedRoute allowedRoles={['admin']}>
+                        <AdminSettings />
+                      </ProtectedRoute>
+                    } 
+                  />
+
+                  {/* Protected Routes with Header & Footer */}
+                  <Route 
+                    path="/profile" 
+                    element={
+                      <ProtectedRoute>
+                        <MainLayout><Profile /></MainLayout>
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route 
+                    path="/booking-history" 
+                    element={
+                      <ProtectedRoute>
+                        <MainLayout><BookingHistory /></MainLayout>
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route 
+                    path="/rate-service/:id" 
+                    element={
+                      <ProtectedRoute>
+                        <MainLayout><RateService /></MainLayout>
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route 
+                    path="/checkout" 
+                    element={
+                      <ProtectedRoute>
+                        <MainLayout><Checkout /></MainLayout>
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route 
+                    path="/order-success" 
+                    element={
+                      <ProtectedRoute>
+                        <MainLayout><OrderSuccess /></MainLayout>
+                      </ProtectedRoute>
+                    }
+                  />
+                  
+                  {/* Public Routes with Header & Footer */}
+                  <Route path="/" element={<MainLayout><Index /></MainLayout>} />
+                  <Route path="/signin" element={<MainLayout><SignIn /></MainLayout>} />
+                  <Route path="/register" element={<MainLayout><Register /></MainLayout>} />
+                  <Route path="/about" element={<MainLayout><About /></MainLayout>} />
+                  <Route path="/services" element={<MainLayout><Services /></MainLayout>} />
+                  <Route path="/services/:slug" element={<MainLayout><ServiceDetail /></MainLayout>} />
+                  <Route path="/booking" element={<MainLayout><Booking /></MainLayout>} />
+                  <Route path="/contact" element={<MainLayout><Contact /></MainLayout>} />
+                  <Route path="/products" element={<MainLayout><Products /></MainLayout>} />
+                  <Route path="/products/:slug" element={<MainLayout><ProductDetail /></MainLayout>} />
+                  <Route path="/cart" element={<MainLayout><Cart /></MainLayout>} />
+                  
+                  {/* Catch-all route for 404 */}
+                  <Route path="*" element={<MainLayout><NotFound /></MainLayout>} />
+                </Routes>
+              </AnimatePresence>
+            </TooltipProvider>
+          </CartProvider>
+        </AuthProvider>
+      </BrowserRouter>
     </QueryClientProvider>
   </React.StrictMode>
 );
