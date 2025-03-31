@@ -1,21 +1,17 @@
+
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ShoppingCart, ChevronRight, Star, Truck, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useToast } from '@/hooks/use-toast';
-import { ProductCardProps } from '@/components/ProductCard';
+import { toast } from '@/hooks/use-toast';
 import { useCart } from '@/hooks/useCart';
 import ProductReview from '@/components/ProductReview';
+import { Product } from '@/types/branch';
 
-const sampleProduct: ProductCardProps & { 
-  description: string; 
-  longDescription: string;
-  ingredients: string;
-  usage: string;
-  quantity: number;
-} = {
+// Sample product for demonstration
+const sampleProduct: Product = {
   id: 'p1',
   name: 'Tinh dầu thảo mộc thư giãn',
   description: 'Tinh dầu thảo mộc cao cấp giúp thư giãn và giảm căng thẳng',
@@ -32,19 +28,15 @@ const sampleProduct: ProductCardProps & {
 
 const ProductDetail = () => {
   const { slug } = useParams<{ slug: string }>();
-  const [product, setProduct] = useState<null | (ProductCardProps & { 
-    longDescription: string;
-    ingredients: string;
-    usage: string;
-    quantity: number;
-  })>(null);
+  const [product, setProduct] = useState<Product | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-  const { toast } = useToast();
   const { addToCart } = useCart();
 
   useEffect(() => {
+    // Simulate fetching product data
     const timer = setTimeout(() => {
+      // In a real app, you would fetch the product by slug from an API
       setProduct(sampleProduct);
       setIsLoading(false);
     }, 800);
@@ -56,12 +48,10 @@ const ProductDetail = () => {
 
   const handleAddToCart = () => {
     if (product) {
-      const productWithQuantity = {
+      addToCart({
         ...product,
         quantity: quantity
-      };
-      
-      addToCart(productWithQuantity);
+      });
       
       toast({
         title: "Đã thêm vào giỏ hàng",
@@ -106,6 +96,7 @@ const ProductDetail = () => {
 
   return (
     <div className="pt-16">
+      {/* Breadcrumbs */}
       <section className="py-4 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="flex items-center text-sm text-gray-500">
@@ -113,14 +104,16 @@ const ProductDetail = () => {
             <ChevronRight className="h-4 w-4 mx-2" />
             <Link to="/products" className="hover:text-spa-800 transition-colors">Sản phẩm</Link>
             <ChevronRight className="h-4 w-4 mx-2" />
-            <span className="text-gray-700 font-medium">{product?.name}</span>
+            <span className="text-gray-700 font-medium">{product.name}</span>
           </div>
         </div>
       </section>
 
+      {/* Product Details */}
       <section className="py-12">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {/* Product Image */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -128,18 +121,19 @@ const ProductDetail = () => {
               className="rounded-xl overflow-hidden"
             >
               <img 
-                src={product?.imageUrl} 
-                alt={product?.name} 
+                src={product.imageUrl} 
+                alt={product.name} 
                 className="w-full h-full object-cover"
               />
             </motion.div>
             
+            {/* Product Info */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <h1 className="text-3xl md:text-4xl font-serif font-bold text-spa-900 mb-4">{product?.name}</h1>
+              <h1 className="text-3xl md:text-4xl font-serif font-bold text-spa-900 mb-4">{product.name}</h1>
               
               <div className="flex items-center mb-4">
                 <div className="flex mr-2">
@@ -154,11 +148,11 @@ const ProductDetail = () => {
               </div>
               
               <p className="text-xl md:text-2xl font-medium text-spa-800 mb-6">
-                {product?.price && new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.price)}
+                {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.price)}
               </p>
               
               <p className="text-gray-700 mb-6">
-                {product?.description}
+                {product.description}
               </p>
               
               <div className="flex items-center space-x-2 text-sm text-gray-700 mb-6">
@@ -185,7 +179,7 @@ const ProductDetail = () => {
                     +
                   </button>
                   <span className="ml-4 text-gray-500">
-                    {product?.quantity} sản phẩm có sẵn
+                    {product.quantity} sản phẩm có sẵn
                   </span>
                 </div>
               </div>
@@ -193,12 +187,13 @@ const ProductDetail = () => {
               <Button 
                 onClick={handleAddToCart} 
                 className="w-full md:w-auto bg-spa-800 hover:bg-spa-700 mb-8"
-                disabled={!product?.inStock}
+                disabled={!product.inStock}
               >
                 <ShoppingCart className="mr-2 h-5 w-5" />
                 Thêm vào giỏ hàng
               </Button>
               
+              {/* Product Tabs */}
               <Tabs defaultValue="description" className="mt-8">
                 <TabsList className="grid w-full grid-cols-3">
                   <TabsTrigger value="description">Mô tả</TabsTrigger>
@@ -206,13 +201,13 @@ const ProductDetail = () => {
                   <TabsTrigger value="usage">Cách sử dụng</TabsTrigger>
                 </TabsList>
                 <TabsContent value="description" className="p-4 text-gray-700">
-                  <p>{product?.longDescription}</p>
+                  <p>{product.longDescription}</p>
                 </TabsContent>
                 <TabsContent value="ingredients" className="p-4 text-gray-700">
-                  <p>{product?.ingredients}</p>
+                  <p>{product.ingredients}</p>
                 </TabsContent>
                 <TabsContent value="usage" className="p-4 text-gray-700">
-                  <p>{product?.usage}</p>
+                  <p>{product.usage}</p>
                 </TabsContent>
               </Tabs>
             </motion.div>
@@ -220,6 +215,7 @@ const ProductDetail = () => {
         </div>
       </section>
 
+      {/* Reviews Section */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl font-serif font-bold text-spa-900 mb-8">Đánh giá sản phẩm</h2>

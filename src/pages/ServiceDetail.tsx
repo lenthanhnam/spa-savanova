@@ -4,21 +4,11 @@ import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Clock, Calendar, ChevronRight, Star, ArrowLeft, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { ServiceCardProps } from '@/components/ServiceCard';
 import ServiceReview from '@/components/ServiceReview';
+import { Service } from '@/types/branch';
 
 // Sample service detail data
-const sampleService: ServiceCardProps & { 
-  fullDescription: string;
-  benefits: string[];
-  duration: string;
-  therapists: {
-    id: string;
-    name: string;
-    image: string;
-    specialty: string;
-  }[];
-} = {
+const sampleService: Service = {
   id: 's1',
   title: 'Swedish Massage',
   description: 'Our signature massage uses gentle to firm pressure to release tension, ease muscle pain, and promote relaxation.',
@@ -60,22 +50,13 @@ const sampleService: ServiceCardProps & {
 
 const ServiceDetail = () => {
   const { slug } = useParams<{ slug: string }>();
-  const [service, setService] = useState<null | (ServiceCardProps & { 
-    fullDescription: string;
-    benefits: string[];
-    therapists: {
-      id: string;
-      name: string;
-      image: string;
-      specialty: string;
-    }[];
-  })>(null);
+  const [service, setService] = useState<Service | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Simulate loading service data
     const timer = setTimeout(() => {
-      // In a real app, would fetch service by slug
+      // In a real app, would fetch service by slug from an API
       setService(sampleService);
       setIsLoading(false);
     }, 800);
@@ -165,7 +146,7 @@ const ServiceDetail = () => {
               
               <h2 className="text-2xl font-serif font-bold text-spa-900 mb-6">Lợi ích</h2>
               <ul className="space-y-3 mb-12">
-                {service.benefits.map((benefit, index) => (
+                {service.benefits?.map((benefit, index) => (
                   <li key={index} className="flex items-start">
                     <div className="bg-spa-100 rounded-full p-1 mr-3 mt-1">
                       <Star className="h-4 w-4 text-spa-800" />
@@ -177,7 +158,7 @@ const ServiceDetail = () => {
               
               <h2 className="text-2xl font-serif font-bold text-spa-900 mb-6">Đội ngũ chuyên gia</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-                {service.therapists.map((therapist) => (
+                {service.therapists?.map((therapist) => (
                   <motion.div 
                     key={therapist.id}
                     whileHover={{ y: -5 }}
