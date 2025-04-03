@@ -57,3 +57,19 @@ export interface Service {
     specialty: string;
   }[];
 }
+
+export interface Voucher {
+  id: string;
+  code: string;
+  title: string;
+  description: string;
+  discountType: 'percentage' | 'fixed';
+  discountValue: number;
+  minPurchase?: number;
+  expiryDate: string;
+  imageUrl: string;
+  isSpecial: boolean;
+  applicableFor: 'products' | 'services' | 'all';
+  status: 'active' | 'used' | 'expired';
+  terms?: string[];
+}

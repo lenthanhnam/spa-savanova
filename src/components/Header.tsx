@@ -14,7 +14,8 @@ import {
   ClipboardList,
   LogOut,
   UserRound,
-  Settings
+  Settings,
+  Ticket
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import CartIcon from '@/components/CartIcon';
@@ -52,11 +53,12 @@ const Header = () => {
     { name: 'Products', path: '/products', icon: <ShoppingBag className="w-4 h-4 mr-2" /> },
     { name: 'Book Now', path: '/booking', icon: <Calendar className="w-4 h-4 mr-2" /> },
     { name: 'Contact', path: '/contact', icon: <Phone className="w-4 h-4 mr-2" /> },
+    { name: 'Vouchers', path: '/super-vouchers', icon: <Ticket className="w-4 h-4 mr-2" /> },
   ];
 
   // Only show Bookings link if authenticated
   if (isAuthenticated) {
-    navLinks.splice(5, 0, { 
+    navLinks.splice(6, 0, { 
       name: 'Bookings', 
       path: '/booking-history', 
       icon: <ClipboardList className="w-4 h-4 mr-2" /> 
@@ -134,6 +136,10 @@ const Header = () => {
                 <DropdownMenuItem onClick={navigateToProfile}>
                   <User className="mr-2 h-4 w-4" />
                   <span>Profile</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => { navigate('/my-vouchers'); }}>
+                  <Ticket className="mr-2 h-4 w-4" />
+                  <span>My Vouchers</span>
                 </DropdownMenuItem>
                 {(user?.role === 'admin' || user?.role === 'manager') && (
                   <DropdownMenuItem onClick={navigateToAdminDashboard}>
@@ -233,6 +239,13 @@ const Header = () => {
                     <Button variant="ghost" className="w-full justify-start">
                       <User className="w-4 h-4 mr-2" />
                       My Profile
+                    </Button>
+                  </Link>
+                  
+                  <Link to="/my-vouchers" onClick={() => setIsOpen(false)}>
+                    <Button variant="ghost" className="w-full justify-start">
+                      <Ticket className="w-4 h-4 mr-2" />
+                      My Vouchers
                     </Button>
                   </Link>
                   
