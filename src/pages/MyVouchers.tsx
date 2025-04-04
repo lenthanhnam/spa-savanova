@@ -1,14 +1,12 @@
-
 import { useState } from 'react';
 import { useVouchers } from '@/hooks/useVouchers';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import VoucherCard from '@/components/VoucherCard';
 import { ArrowLeft, Ticket, TicketX, AlertCircle } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
-import { Navigate } from 'react-router-dom';
 
 const MyVouchers = () => {
   const { myVouchers, isLoading } = useVouchers();
