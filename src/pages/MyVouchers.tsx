@@ -1,4 +1,5 @@
-import { useState } from 'react';
+
+import { useState, useEffect } from 'react';
 import { useVouchers } from '@/hooks/useVouchers';
 import { Link, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -7,11 +8,98 @@ import { Button } from '@/components/ui/button';
 import VoucherCard from '@/components/VoucherCard';
 import { ArrowLeft, Ticket, TicketX, AlertCircle } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { Voucher } from '@/types/branch';
 
 const MyVouchers = () => {
-  const { myVouchers, isLoading } = useVouchers();
+  const { myVouchers, isLoading, saveVoucher } = useVouchers();
   const { isAuthenticated } = useAuth();
   const [filter, setFilter] = useState<'all' | 'active' | 'expired'>('all');
+
+  // Add sample saved vouchers for demo purposes
+  useEffect(() => {
+    if (isAuthenticated && myVouchers.length === 0) {
+      const demoVouchers: Voucher[] = [
+        {
+          id: 'v6',
+          code: 'FIRSTTIME30',
+          title: 'Ưu đãi lần đầu',
+          description: 'Giảm 30% cho lần đặt lịch đầu tiên',
+          discountType: 'percentage',
+          discountValue: 30,
+          expiryDate: '2023-12-31',
+          imageUrl: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&q=80&w=800',
+          isSpecial: true,
+          applicableFor: 'services',
+          status: 'active',
+          terms: [
+            'Áp dụng cho khách hàng mới',
+            'Chỉ áp dụng cho dịch vụ',
+            'Không áp dụng cùng các khuyến mãi khác'
+          ]
+        },
+        {
+          id: 'v7',
+          code: 'SKINCARE25',
+          title: 'Ưu đãi chăm sóc da',
+          description: 'Giảm 25% cho tất cả sản phẩm chăm sóc da',
+          discountType: 'percentage',
+          discountValue: 25,
+          expiryDate: '2023-12-15',
+          imageUrl: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&q=80&w=800',
+          isSpecial: false,
+          applicableFor: 'products',
+          status: 'active',
+          terms: [
+            'Chỉ áp dụng cho sản phẩm chăm sóc da',
+            'Không áp dụng cùng các khuyến mãi khác'
+          ]
+        },
+        {
+          id: 'v8',
+          code: 'WEEKEND50',
+          title: 'Ưu đãi cuối tuần',
+          description: 'Giảm 50% cho dịch vụ massage vào cuối tuần',
+          discountType: 'percentage',
+          discountValue: 50,
+          minPurchase: 800000,
+          expiryDate: '2023-11-30',
+          imageUrl: 'https://images.unsplash.com/photo-1600334129128-685c5582fd35?auto=format&fit=crop&q=80&w=800',
+          isSpecial: true,
+          applicableFor: 'services',
+          status: 'active',
+          terms: [
+            'Chỉ áp dụng vào thứ bảy và chủ nhật',
+            'Áp dụng cho hóa đơn từ 800.000đ',
+            'Không áp dụng vào ngày lễ'
+          ]
+        },
+        {
+          id: 'v9',
+          code: 'LOYAL200K',
+          title: 'Ưu đãi khách hàng thân thiết',
+          description: 'Giảm 200.000đ cho hóa đơn từ 1.000.000đ',
+          discountType: 'fixed',
+          discountValue: 200000,
+          minPurchase: 1000000,
+          expiryDate: '2023-10-15',
+          imageUrl: 'https://images.unsplash.com/photo-1470259078422-826894b933aa?auto=format&fit=crop&q=80&w=800',
+          isSpecial: false,
+          applicableFor: 'all',
+          status: 'expired',
+          terms: [
+            'Áp dụng cho khách hàng thành viên',
+            'Áp dụng cho hóa đơn từ 1.000.000đ',
+            'Hết hạn ngày 15/10/2023'
+          ]
+        }
+      ];
+
+      // Add demo vouchers to user's saved vouchers
+      demoVouchers.forEach(voucher => {
+        saveVoucher(voucher);
+      });
+    }
+  }, [isAuthenticated, myVouchers.length, saveVoucher]);
 
   if (!isAuthenticated) {
     return <Navigate to="/signin" />;
